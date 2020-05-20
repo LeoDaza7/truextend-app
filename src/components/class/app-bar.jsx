@@ -6,6 +6,18 @@ const AppBrand = lazy(()=>import('../function/app-brand'))
 const AppDrawer = lazy(()=>import('../function/app-drawer'))
 
 class NavBar extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isDrawerOpen: false
+    }
+    this.handleDrawerToggle = this.handleDrawerToggle.bind(this)
+  }
+  handleDrawerToggle(){
+    this.setState((state) => ({
+      isDrawerOpen: !state.isDrawerOpen
+    }))
+  }
   render() {
     return (
       <>
@@ -15,10 +27,10 @@ class NavBar extends Component {
           elevation={ 0 }
           className={ this.props.className }>
           <Toolbar>
-              <AppBrand />
+              <AppBrand toggleDrawer={ this.handleDrawerToggle }/>
           </Toolbar>
         </AppBar>
-        <AppDrawer />
+        <AppDrawer isDrawerOpen={ this.state.isDrawerOpen }/>
       </>
     )
   }

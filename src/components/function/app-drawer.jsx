@@ -8,7 +8,7 @@ export default function AppDrawer(props) {
   const classes = useStyles()
   return (
     <Drawer
-      open
+      open={props.isDrawerOpen}
       variant='persistent'>
       <div className={classes.toolbar} />
       <DrawerItems />
@@ -19,3 +19,4 @@ export default function AppDrawer(props) {
 const useStyles = makeStyles((theme)=>({
   toolbar: theme.mixins.toolbar
 }))
+
