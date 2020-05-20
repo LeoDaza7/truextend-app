@@ -12,7 +12,8 @@ class NavBar extends Component {
         <AppBar 
           position='sticky' 
           color='default'
-          elevation={ 0 }>
+          elevation={ 0 }
+          className={ this.props.className }>
           <Toolbar>
               <AppBrand />
           </Toolbar>
