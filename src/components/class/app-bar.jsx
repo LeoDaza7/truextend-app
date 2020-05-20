@@ -4,6 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 
 const AppBrand = lazy(()=>import('../function/app-brand'))
 const SearchBox = lazy(()=>import('../function/search-box'))
+const ToggleTheme = lazy(()=>import('../function/toggle-theme'))
 const AppDrawer = lazy(()=>import('../function/app-drawer'))
 
 class NavBar extends Component {
@@ -47,6 +48,7 @@ class NavBar extends Component {
               submitHandler={ this.handleSearchSubmit }
               changeHandler={ this.handleSearchChange }
             />
+            <ToggleTheme />
           </Toolbar>
         </AppBar>
         <AppDrawer isDrawerOpen={ this.state.isDrawerOpen }/>
