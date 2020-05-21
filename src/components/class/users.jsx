@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, lazy } from 'react'
+
+const UserList = lazy(()=>import('../function/user-list'))
 
 export default class Users extends Component {
 
@@ -37,18 +39,7 @@ export default class Users extends Component {
     } else if (!isLoaded){
       return <>Loading..</>
     } else {
-      return (
-        <>
-          <h2>Users Page</h2>
-          <ul>
-            {users.map(user => (
-              <li key={user.id}>
-                {user.login}
-              </li>
-            ))}
-          </ul>
-        </>
-      )
+      return <UserList users={ users }/>
     }  
   }
 }
