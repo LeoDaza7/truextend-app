@@ -10,7 +10,7 @@ export default function AppDrawer(props) {
     <Drawer
       open={props.isDrawerOpen}
       variant='persistent'>
-      <div className={classes.toolbar} />
+      <div className={ classes.toolbar } />
       <DrawerItems />
     </Drawer>
   )

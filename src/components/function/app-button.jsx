@@ -1,19 +1,18 @@
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core'
 
-export default function AppIconButton(props) {
+export default function AppButton(props) {
   const classes = useStyles()
   return (
-    <IconButton
+    <Button 
       color='inherit'
-      edge={ props.edge }
       className={ classes[props.className] }
       href={ props.href }
       target={ props.target }
       onClick={ props.onClick }>
       { props.children }
-    </IconButton>
+    </Button>
   )
 }
 

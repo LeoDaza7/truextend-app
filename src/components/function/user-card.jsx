@@ -9,6 +9,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 import { makeStyles } from '@material-ui/core/styles'
 
 const AppIconButton = lazy(()=>import('./app-icon-button'))
+const AppButton = lazy(()=>import('./app-button'))
 
 export default function UserCard(props) {
   const classes = useStyles()
@@ -18,7 +19,7 @@ export default function UserCard(props) {
         <CardMedia 
           className={ classes.cardMedia }
           image={ props.avatarUrl }
-          tile={ props.type }/>
+          tile={ props.login }/>
         <CardContent>
           <Typography variant='h5'>
             { props.login }
@@ -26,9 +27,12 @@ export default function UserCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <AppIconButton>
+        <AppIconButton href={ props.githubPage } target='_blank'>
           <GitHubIcon/>
         </AppIconButton>
+        <AppButton href={ props.reposUrl /**TODO */} target='_blank'>
+          Repos
+        </AppButton>
       </CardActions>
     </Card>
   )

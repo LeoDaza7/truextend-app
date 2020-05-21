@@ -8,6 +8,7 @@ export default function AppBrand(props) {
     <>
       <AppIconButton
         className='drawerToggle'
+        edge='start'
         onClick={ props.toggleDrawer }>
         <MenuIcon />
       </AppIconButton>
