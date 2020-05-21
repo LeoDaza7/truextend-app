@@ -13,7 +13,7 @@ export default function AppRouter(props) {
       <Switch>
         <Route exact path='/' component={Home}/>
         <Route exact path='/users' component={Users}/>
-        <Route exact path='/repos/user/:username' component={Repositories}/>
+        <Route exact path='/repos/user=:username' component={Repositories}/>
       </Switch>
     </Router>
   )

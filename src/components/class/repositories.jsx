@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, lazy } from 'react'
+
+const RepositoryList = lazy(()=>import('../function/repository-list'))
 
 export default class Repositories extends Component {
   constructor(props) {
@@ -11,7 +13,7 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    fetch('https://api.github.com/users/'+ this.props.match.params.username +'?page=1&per_page=4').then(
+    fetch('https://api.github.com/users/'+ this.props.match.params.username +'/repos?page=1&per_page=100').then(
       response => response.json()
     ).then(
       result => {
@@ -36,7 +38,7 @@ export default class Repositories extends Component {
     } else if (!isLoaded){
       return <>Loading..</>
     } else {
-      return <p>lol</p>
+      return <RepositoryList repos={ repositories }/>
     }  
   }
 }
