@@ -14,7 +14,7 @@ export default class Users extends Component {
   }
 
   componentDidMount() {
-    fetch('https://api.github.com/users?page=1&per_page=100').then(
+    fetch('https://api.github.com/users?page=1&per_page=4').then(
       response => response.json()
     ).then(
       result => {
