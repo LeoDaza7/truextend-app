@@ -8,7 +8,7 @@ export default function SearchBox(props) {
   return (
     <Paper
       component='form'
-      className='mr-auto'
+      className='mx-auto'
       variant='outlined'
       onSubmit={ props.submitHandler }>
       <IconButton type='submit' className=''>
