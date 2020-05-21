@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 
 const UserCard = lazy(()=>import('./user-card'))
+const AppPagination = lazy(()=>import('./app-pagination'))
 
 export default function UserList(props) {
   const users = props.users.map(user => (
@@ -15,6 +16,7 @@ export default function UserList(props) {
   return (
     <>
       { users }
+      <AppPagination />
     </>
   )
 }

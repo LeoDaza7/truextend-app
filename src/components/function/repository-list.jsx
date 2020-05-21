@@ -1,6 +1,7 @@
 import React, { lazy } from 'react'
 
 const RepositoryCard = lazy(()=>import('./repository-card'))
+const AppPagination = lazy(()=>import('./app-pagination'))
 
 export default function RepositoryList(props) {
   const repositories = props.repos.map(repo => (
@@ -17,6 +18,7 @@ export default function RepositoryList(props) {
   return (
     <>
       { repositories }
+      <AppPagination />
     </>
   )
 }
