@@ -5,8 +5,9 @@ import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CardActions from '@material-ui/core/CardActions'
-import GitHubIcon from '@material-ui/icons/GitHub';
+import GitHubIcon from '@material-ui/icons/GitHub'
 import { makeStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 
 const AppIconButton = lazy(()=>import('./app-icon-button'))
 const AppButton = lazy(()=>import('./app-button'))
@@ -30,9 +31,9 @@ export default function UserCard(props) {
         <AppIconButton href={ props.githubPage } target='_blank'>
           <GitHubIcon/>
         </AppIconButton>
-        <AppButton href={ props.reposUrl /**TODO */} target='_blank'>
-          Repos
-        </AppButton>
+        <Link to={`/repos/user/${ props.login }`}>
+          <AppButton>Repos</AppButton>
+        </Link>
       </CardActions>
     </Card>
   )
