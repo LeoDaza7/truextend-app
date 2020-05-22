@@ -2,23 +2,26 @@ import React, { Component, lazy } from 'react'
 
 const RepositoryList = lazy(()=>import('../function/repository-list'))
 const AppPagination = lazy(()=>import('../function/app-pagination'))
+const parse = require('parse-link-header')
 
 export default class Repositories extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=8',
       repositories: [],
       isLoaded: false,
       error: null,
-      paginationLink: null
+      pagination: null
     }
+    this.handlePaginationChange = this.handlePaginationChange.bind(this)
   }
 
-  componentDidMount() {
-    fetch('https://api.github.com/users/'+ this.props.match.params.username +'/repos?page=1&per_page=10').then(
+  fetchData() {
+    fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
-          paginationLink: response.headers.get('link')
+          pagination: parse(response.headers.get('link'))
         })
       )
     ).then(
@@ -37,8 +40,22 @@ export default class Repositories extends Component {
     )
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0)
+    this.fetchData()
+  }
+
+  handlePaginationChange(){
+    window.scrollTo(0, 0)
+    this.setState((state, props) => ({
+      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=8'
+    }),()=>{
+      this.fetchData()
+    })
+  }
+
   render() {
-    const { error, isLoaded, repositories, paginationLink } = this.state
+    const { error, isLoaded, repositories, pagination } = this.state
     if (error) {
       return <>Error: { error.message }</>
     } else if (!isLoaded){
@@ -47,7 +64,11 @@ export default class Repositories extends Component {
       return (
         <>
           <RepositoryList repos={ repositories }/>
-          <AppPagination link={ paginationLink }/>
+          <AppPagination 
+            username={ this.props.match.params.username }
+            pagination={ pagination }
+            changeHandler={ this.handlePaginationChange }
+          />
         </>
       )
     }  

@@ -1,18 +1,20 @@
 import React, { Component, lazy } from 'react'
+import { Typography } from '@material-ui/core'
 
 const UserList = lazy(()=>import('../function/user-list'))
 const AppButton = lazy(()=>import('../function/app-button'))
+const parseLinkHeader = require('parse-link-header')
 
 export default class Users extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      url:'https://api.github.com/users?page=1&per_page=32',
+      url:'https://api.github.com/users?page=1&per_page=4',
       isLoaded: false,
       error: null,
       users: [],
-      nextPageUrl: null
+      pagination: null
     }
     this.handleNext = this.handleNext.bind(this)
   }
@@ -21,7 +23,7 @@ export default class Users extends Component {
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
-          nextPageUrl: parseLink(response.headers.get('link')).next
+          pagination: parseLinkHeader(response.headers.get('link'))
         })
       )
     ).then(
@@ -29,7 +31,7 @@ export default class Users extends Component {
         this.setState((state) => ({
           isLoaded: true,
           users: result,
-          url: state.nextPageUrl
+          url: state.pagination.next.url
         }))
       },
       (error) => {
@@ -42,10 +44,12 @@ export default class Users extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0)
     this.fetchData()
   }
 
-  handleNext(){
+  handleNext() {
+    window.scrollTo(0, 0)
     this.fetchData()
   }
 
@@ -58,6 +62,7 @@ export default class Users extends Component {
     } else {
       return (
         <>
+          <Typography variant='h4'>GitHub Users</Typography>
           <UserList users={ users }/>
           <AppButton onClick={ this.handleNext }>next page</AppButton>
         </>
@@ -65,27 +70,3 @@ export default class Users extends Component {
     }  
   }
 }
-
-function parseLink(header) {
-  //https://gist.github.com/niallo/3109252
-  if (header.length === 0) {
-    throw new Error("input must not be of zero length");
-}
-
-  // Split parts by comma
-  var parts = header.split(',');
-  var links = {};
-  // Parse each part into a named link
-  for(var i=0; i<parts.length; i++) {
-      var section = parts[i].split(';');
-      if (section.length !== 2) {
-          throw new Error("section could not be split on ';'");
-      }
-      var url = section[0].replace(/<(.*)>/, '$1').trim();
-      var name = section[1].replace(/rel="(.*)"/, '$1').trim();
-      links[name] = url;
-  }
-  return links;
-}
-
-

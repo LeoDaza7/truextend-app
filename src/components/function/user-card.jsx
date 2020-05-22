@@ -31,7 +31,7 @@ export default function UserCard(props) {
         <AppIconButton href={ props.githubPage } target='_blank'>
           <GitHubIcon/>
         </AppIconButton>
-        <Link to={`/repos/user=${ props.login }`}>
+        <Link to={`/repos/user=${ props.login }/page=1`}>
           <AppButton>Repos</AppButton>
         </Link>
       </CardActions>
