@@ -3,6 +3,6 @@ import Pagination from '@material-ui/lab/Pagination'
 
 export default function AppPagination() {
   return (
-    <Pagination count={10} />
+    <Pagination count={0} />
   )
 }
