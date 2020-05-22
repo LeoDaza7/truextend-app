@@ -65,7 +65,7 @@ export default class Users extends Component {
       return <>Loading..</>
     } else {
       return (
-        <Box mx='auto' width='95%' className='usersBox'>
+        <Box mx='auto' width='95%'>
           <Grid container justify='flex-start'>
             <Box my={2} ml={10}>
               <Typography variant='h4'>GitHub Users</Typography>

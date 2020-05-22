@@ -1,8 +1,11 @@
 import React, { Component, lazy } from 'react'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 
 const RepositoryList = lazy(()=>import('../function/repository-list'))
 const AppPagination = lazy(()=>import('../function/app-pagination'))
-const parse = require('parse-link-header')
+const parseLinkHeader = require('parse-link-header')
 
 export default class Repositories extends Component {
   constructor(props) {
@@ -21,7 +24,7 @@ export default class Repositories extends Component {
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
-          pagination: parse(response.headers.get('link'))
+          pagination: parseLinkHeader(response.headers.get('link'))
         })
       )
     ).then(
@@ -41,17 +44,18 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0)
-    this.fetchData()
+    this.fetchData(
+      window.scrollTo(0, 0)
+    )
   }
 
   handlePaginationChange(){
-    window.scrollTo(0, 0)
     this.setState((state, props) => ({
       url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=8'
-    }),()=>{
-      this.fetchData()
-    })
+    }),()=> this.fetchData(
+        window.scrollTo(0, 0)
+      )
+    )
   }
 
   render() {
@@ -62,14 +66,25 @@ export default class Repositories extends Component {
       return <>Loading..</>
     } else {
       return (
-        <>
+        <Box mx='auto' width='95%'>
+          <Grid container justify='flex-start'>
+            <Box my={2} ml={10}>
+              <Typography variant='h4'>
+                { this.props.match.params.username } repositories
+              </Typography>
+            </Box>
+          </Grid>
           <RepositoryList repos={ repositories }/>
-          <AppPagination 
-            username={ this.props.match.params.username }
-            pagination={ pagination }
-            changeHandler={ this.handlePaginationChange }
-          />
-        </>
+          <Grid container justify='center'>
+            <Box my={3} mr={10}>
+            <AppPagination 
+              username={ this.props.match.params.username }
+              pagination={ pagination }
+              changeHandler={ this.handlePaginationChange }
+            />
+            </Box>
+          </Grid>
+        </Box>
       )
     }  
   }
