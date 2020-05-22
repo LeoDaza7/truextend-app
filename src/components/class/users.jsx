@@ -1,33 +1,36 @@
 import React, { Component, lazy } from 'react'
 
 const UserList = lazy(()=>import('../function/user-list'))
-const AppPagination = lazy(()=>import('../function/app-pagination'))
+const AppButton = lazy(()=>import('../function/app-button'))
 
 export default class Users extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      users: [],
+      url:'https://api.github.com/users?page=1&per_page=32',
       isLoaded: false,
       error: null,
-      paginationLink: null
+      users: [],
+      nextPageUrl: null
     }
+    this.handleNext = this.handleNext.bind(this)
   }
 
-  componentDidMount() {
-    fetch('https://api.github.com/users?page=1&per_page=4',{mode: 'cors'}).then(
+  fetchData(){
+    fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
-          paginationLink: response.headers.get('link')
+          nextPageUrl: parseLink(response.headers.get('link')).next
         })
       )
     ).then(
       result => {
-        this.setState({
+        this.setState((state) => ({
           isLoaded: true,
-          users: result
-        })
+          users: result,
+          url: state.nextPageUrl
+        }))
       },
       (error) => {
         this.setState({
@@ -38,8 +41,16 @@ export default class Users extends Component {
     )
   }
 
+  componentDidMount() {
+    this.fetchData()
+  }
+
+  handleNext(){
+    this.fetchData()
+  }
+
   render() {
-    const { error, isLoaded, users, paginationLink } = this.state
+    const { error, isLoaded, users } = this.state
     if (error) {
       return <>Error: { error.message }</>
     } else if (!isLoaded){
@@ -48,9 +59,33 @@ export default class Users extends Component {
       return (
         <>
           <UserList users={ users }/>
-          <AppPagination link={ paginationLink }/>
+          <AppButton onClick={ this.handleNext }>next page</AppButton>
         </>
       )
     }  
   }
 }
+
+function parseLink(header) {
+  //https://gist.github.com/niallo/3109252
+  if (header.length === 0) {
+    throw new Error("input must not be of zero length");
+}
+
+  // Split parts by comma
+  var parts = header.split(',');
+  var links = {};
+  // Parse each part into a named link
+  for(var i=0; i<parts.length; i++) {
+      var section = parts[i].split(';');
+      if (section.length !== 2) {
+          throw new Error("section could not be split on ';'");
+      }
+      var url = section[0].replace(/<(.*)>/, '$1').trim();
+      var name = section[1].replace(/rel="(.*)"/, '$1').trim();
+      links[name] = url;
+  }
+  return links;
+}
+
+
