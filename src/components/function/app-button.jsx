@@ -7,6 +7,8 @@ export default function AppButton(props) {
   return (
     <Button 
       color='inherit'
+      component={props.component}
+      to={props.to}
       className={ classes[props.className] }
       href={ props.href }
       target={ props.target }

@@ -1,5 +1,7 @@
 import React, { Component, lazy } from 'react'
-import { Typography, Box, Grid } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 
 const UserList = lazy(()=>import('../function/user-list'))
 const AppButton = lazy(()=>import('../function/app-button'))
@@ -63,8 +65,8 @@ export default class Users extends Component {
       return <>Loading..</>
     } else {
       return (
-        <Box mx='auto' width='95%' >
-          <Grid ontainer justify='flex-start'>
+        <Box mx='auto' width='95%' className='usersBox'>
+          <Grid container justify='flex-start'>
             <Box my={2} ml={10}>
               <Typography variant='h4'>GitHub Users</Typography>
             </Box>

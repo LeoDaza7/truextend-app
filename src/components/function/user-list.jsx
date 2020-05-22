@@ -1,5 +1,6 @@
 import React, { lazy } from 'react'
-import { Grid, Paper, makeStyles } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles } from '@material-ui/core'
 
 const UserCard = lazy(()=>import('./user-card'))
 
@@ -29,7 +30,5 @@ export default function UserList(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  grid: {
-    //margin: 'auto'
-  }
+  //custom styles
 }))

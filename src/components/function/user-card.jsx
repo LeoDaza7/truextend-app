@@ -8,6 +8,7 @@ import CardActions from '@material-ui/core/CardActions'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import { Grid } from '@material-ui/core'
 
 const AppIconButton = lazy(()=>import('./app-icon-button'))
 const AppButton = lazy(()=>import('./app-button'))
@@ -28,22 +29,32 @@ export default function UserCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <AppIconButton href={ props.githubPage } target='_blank'>
-          <GitHubIcon/>
-        </AppIconButton>
-        <Link to={`/repos/user=${ props.login }/page=1`}>
-          <AppButton>Repos</AppButton>
-        </Link>
+        <Grid
+          container
+          justify='space-between'
+          alignItems='center'>
+          <AppIconButton href={ props.githubPage } target='_blank'>
+            <GitHubIcon/>
+          </AppIconButton>
+          <AppButton component={Link} to={`/repos/user=${ props.login }/page=1`}>
+            <Typography className={classes.button}>See repositories..</Typography>
+          </AppButton>
+        </Grid>
       </CardActions>
     </Card>
   )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
-    maxWidth: 280
+    maxWidth: 280,
+    backgroundColor: theme.palette.background.default
+  },
+  button: {
+    textTransform: 'none',
+    fontWeight: '420'
   },
   cardMedia: {
     height: 210
   },
-})
+}))
