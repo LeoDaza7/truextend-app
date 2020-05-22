@@ -1,6 +1,7 @@
 import React, { Component, lazy } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
+import Box from '@material-ui/core/Box'
 
 const AppBrand = lazy(()=>import('../function/app-brand'))
 const SearchBox = lazy(()=>import('../function/search-box'))
@@ -17,11 +18,17 @@ class NavBar extends Component {
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this)
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
     this.handleSearchChange = this.handleSearchChange.bind(this)
+    this.handleDrawerClose = this.handleDrawerClose.bind(this)
   }
   handleDrawerToggle(){
     this.setState((state) => ({
       isDrawerOpen: !state.isDrawerOpen
     }))
+  }
+  handleDrawerClose(){
+    this.setState({
+      isDrawerOpen: false
+    })
   }
   handleSearchSubmit (event) {
     event.preventDefault()
@@ -42,16 +49,20 @@ class NavBar extends Component {
           elevation={ 0 }
           className={ this.props.className }>
           <Toolbar>
-            <AppBrand toggleDrawer={ this.handleDrawerToggle }/>
+            <Box ml={1}>
+              <AppBrand toggleDrawer={ this.handleDrawerToggle }/>
+            </Box>
             <SearchBox
               searchValue={ this.state.searchBoxValue }
               submitHandler={ this.handleSearchSubmit }
               changeHandler={ this.handleSearchChange }
             />
-            <ToggleTheme />
+            <Box mr={10}>
+              <ToggleTheme />
+            </Box>
           </Toolbar>
         </AppBar>
-        <AppDrawer isDrawerOpen={ this.state.isDrawerOpen }/>
+        <AppDrawer isDrawerOpen={ this.state.isDrawerOpen } handleClose={this.handleDrawerClose}/>
       </>
     )
   }

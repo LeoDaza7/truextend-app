@@ -9,6 +9,7 @@ export default function AppDrawer(props) {
   return (
     <Drawer
       open={props.isDrawerOpen}
+      onClick={props.handleClose}
       variant='persistent'>
       <div className={ classes.toolbar } />
       <DrawerItems />

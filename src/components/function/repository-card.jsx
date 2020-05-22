@@ -30,15 +30,15 @@ export default function UserCard(props) {
               <Typography variant='subtitle1'>
                 Issues
               </Typography>
-              <Typography variant='p'>
+              <Typography variant='body1'>
                 { props.issues }
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant='subtitle1'>
-                OpenIssues
+                Open Issues
               </Typography>
-              <Typography variant='p'>
+              <Typography variant='body1'>
                 { props.openIssues }
               </Typography>
             </Grid>
@@ -46,7 +46,7 @@ export default function UserCard(props) {
               <Typography variant='subtitle1'>
                 Forks
               </Typography>
-              <Typography variant='p'>
+              <Typography variant='body1'>
                 { props.forks }
               </Typography>
             </Grid>
@@ -71,10 +71,3 @@ const useStyles = makeStyles((theme) => ({
     height: 140
   },
 }))
-
-/**
-          
-          
-          <Typography variant='h6'>
-            Details: { props.details }
-          </Typography> */

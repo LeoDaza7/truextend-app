@@ -24,7 +24,7 @@ export default function RepositoryList(props) {
       className={classes.grid}
       justify='center'
       alignItems='center'
-      spacing={2}>
+      spacing={3}>
       { repositories }
     </Grid>
   )

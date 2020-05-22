@@ -4,13 +4,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import PeopleIcon from '@material-ui/icons/People'
-import HomeIcon from '@material-ui/icons/Home'
 import { Link } from 'react-router-dom'
 
 export default function DrawerItems(props){
   const items = [
-    { component: 'Home', route: '/', icon: <HomeIcon /> },
-    { component: 'Users', route: '/users', icon: <PeopleIcon /> },
+    { component: 'Users', route: '/', icon: <PeopleIcon /> }
   ]
 
   const itemList = items.map((item) => (
