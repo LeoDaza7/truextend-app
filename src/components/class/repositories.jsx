@@ -20,6 +20,12 @@ export default class Repositories extends Component {
     this.handlePaginationChange = this.handlePaginationChange.bind(this)
   }
 
+  componentDidMount() {
+    this.fetchData(
+      window.scrollTo(0, 0)
+    )
+  }
+
   fetchData() {
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
@@ -43,10 +49,15 @@ export default class Repositories extends Component {
     )
   }
 
-  componentDidMount() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.repositories !== this.state.repositories){
+      localStorage.setItem('repos',JSON.stringify(this.state.repositories))
+    } else {
+      this.setState({
+        repositories: JSON.parse(localStorage.getItem('repos')),
+        isLoaded: true
+      })
+    }
   }
 
   handlePaginationChange(){

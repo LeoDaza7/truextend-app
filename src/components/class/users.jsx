@@ -21,6 +21,12 @@ export default class Users extends Component {
     this.handleNext = this.handleNext.bind(this)
   }
 
+  componentDidMount() {
+    this.fetchData(
+      window.scrollTo(0, 0)
+    )
+  }
+
   fetchData(){
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
@@ -44,11 +50,16 @@ export default class Users extends Component {
       }
     )
   }
-
-  componentDidMount() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+  
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.users !== this.state.users){
+      localStorage.setItem('users',JSON.stringify(this.state.users))
+    }else {
+      this.setState({
+        users: JSON.parse(localStorage.getItem('users')),
+        isLoaded: true
+      })
+    }
   }
 
   handleNext() {

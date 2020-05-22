@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import  ThemeContext from './theme-context'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
 
@@ -10,6 +10,14 @@ function ThemeProvider(props) {
     setDarkMode(!darkMode)
   }
 
+  useEffect(() => {
+    setDarkMode(JSON.parse(localStorage.getItem('theme')))
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('theme',JSON.stringify(darkMode))
+  },[darkMode])
+
   const theme = createMuiTheme({
     palette: {
       type: darkMode ? 'dark' : 'light'
@@ -20,6 +28,7 @@ function ThemeProvider(props) {
     isDarkMode: darkMode,
     toggleTheme: handleToggleTheme
   }
+
 
   return (
     <ThemeContext.Provider value={ state }>
