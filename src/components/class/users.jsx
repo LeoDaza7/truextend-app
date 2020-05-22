@@ -1,5 +1,5 @@
 import React, { Component, lazy } from 'react'
-import { Typography } from '@material-ui/core'
+import { Typography, Box, Grid } from '@material-ui/core'
 
 const UserList = lazy(()=>import('../function/user-list'))
 const AppButton = lazy(()=>import('../function/app-button'))
@@ -10,7 +10,7 @@ export default class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url:'https://api.github.com/users?page=1&per_page=4',
+      url:'https://api.github.com/users?page=1&per_page=32',
       isLoaded: false,
       error: null,
       users: [],
@@ -44,13 +44,15 @@ export default class Users extends Component {
   }
 
   componentDidMount() {
-    window.scrollTo(0, 0)
-    this.fetchData()
+    this.fetchData(
+      window.scrollTo(0, 0)
+    )
   }
 
   handleNext() {
-    window.scrollTo(0, 0)
-    this.fetchData()
+    this.fetchData(
+      window.scrollTo(0, 0)
+    )
   }
 
   render() {
@@ -61,11 +63,19 @@ export default class Users extends Component {
       return <>Loading..</>
     } else {
       return (
-        <>
-          <Typography variant='h4'>GitHub Users</Typography>
+        <Box mx='auto' width='95%' >
+          <Grid ontainer justify='flex-start'>
+            <Box my={2} ml={10}>
+              <Typography variant='h4'>GitHub Users</Typography>
+            </Box>
+          </Grid>
           <UserList users={ users }/>
-          <AppButton onClick={ this.handleNext }>next page</AppButton>
-        </>
+          <Grid container justify='flex-end'>
+            <Box my={3} mr={10}>
+              <AppButton onClick={ this.handleNext }>next page</AppButton>
+            </Box>
+          </Grid>
+        </Box>
       )
     }  
   }
