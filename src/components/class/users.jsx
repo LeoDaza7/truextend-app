@@ -12,7 +12,7 @@ export default class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url:'https://api.github.com/users?page=1&per_page=32',
+      url:'https://api.github.com/users?page=1&per_page=16',
       isLoaded: false,
       error: null,
       users: [],

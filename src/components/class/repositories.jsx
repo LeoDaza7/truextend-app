@@ -11,7 +11,7 @@ export default class Repositories extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=8',
+      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16',
       repositories: [],
       isLoaded: false,
       error: null,
@@ -51,7 +51,7 @@ export default class Repositories extends Component {
 
   handlePaginationChange(){
     this.setState((state, props) => ({
-      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=8'
+      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
     }),()=> this.fetchData(
         window.scrollTo(0, 0)
       )

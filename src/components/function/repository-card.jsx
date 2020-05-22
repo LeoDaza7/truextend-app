@@ -3,8 +3,9 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import CardActions from '@material-ui/core/CardActions'
 import GitHubIcon from '@material-ui/icons/GitHub'
+import CardActions from '@material-ui/core/CardActions'
+import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 
 const AppIconButton = lazy(()=>import('./app-icon-button'))
@@ -18,34 +19,62 @@ export default function UserCard(props) {
           <Typography variant='h5'>
             { props.name }
           </Typography>
-          <Typography variant='h6'>
-            Issues: { props.issues }
-          </Typography>
-          <Typography variant='h6'>
-            OpenIssues: { props.openIssues }
-          </Typography>
-          <Typography variant='h6'>
-            Forks: { props.forks }
-          </Typography>
-          <Typography variant='h6'>
-            Details: { props.details }
-          </Typography>
+          <AppIconButton href={ props.githubPage } target='_blank'>
+              <GitHubIcon/>
+          </AppIconButton>
+          <Grid container
+            justify='space-around'
+            alignItems='center'
+          >
+            <Grid item>
+              <Typography variant='subtitle1'>
+                Issues
+              </Typography>
+              <Typography variant='p'>
+                { props.issues }
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant='subtitle1'>
+                OpenIssues
+              </Typography>
+              <Typography variant='p'>
+                { props.openIssues }
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant='subtitle1'>
+                Forks
+              </Typography>
+              <Typography variant='p'>
+                { props.forks }
+              </Typography>
+            </Grid>
+          </Grid>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <AppIconButton href={ props.githubPage } target='_blank'>
-          <GitHubIcon/>
-        </AppIconButton>
+        <Typography variant='subtitle2'>
+          { props.details }
+        </Typography>
       </CardActions>
     </Card>
   )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   card: {
-    maxWidth: 350
+    maxWidth: 350,
+    backgroundColor: theme.palette.background.default
   },
   cardMedia: {
     height: 140
   },
-})
+}))
+
+/**
+          
+          
+          <Typography variant='h6'>
+            Details: { props.details }
+          </Typography> */
