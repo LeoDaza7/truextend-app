@@ -1,3 +1,11 @@
+## Description
+
+Basic react app to fetch data from GitHub API and display it.
+
+## Manual
+
+To see the app's navigation instructions, [Click here](https://drive.google.com/open?id=175TsGlq1uIs3q-gSgA-QVSB8b-HHxsH1DvXaiVN-89o).
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
