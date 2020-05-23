@@ -2,6 +2,7 @@ import React, { Component, lazy } from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 const UserList = lazy(()=>import('../function/user-list'))
 const AppButton = lazy(()=>import('../function/app-button'))
@@ -73,7 +74,7 @@ export default class Users extends Component {
     if (error) {
       return <>Error: { error.message }</>
     } else if (!isLoaded){
-      return <>Loading..</>
+      return <LinearProgress />
     } else {
       return (
         <Box mx='auto' width='95%'>

@@ -2,6 +2,7 @@ import React, { Component, lazy } from 'react'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 const RepositoryList = lazy(()=>import('../function/repository-list'))
 const AppPagination = lazy(()=>import('../function/app-pagination'))
@@ -74,7 +75,7 @@ export default class Repositories extends Component {
     if (error) {
       return <>Error: { error.message }</>
     } else if (!isLoaded){
-      return <>Loading..</>
+      return <LinearProgress />
     } else {
       return (
         <Box mx='auto' width='95%'>

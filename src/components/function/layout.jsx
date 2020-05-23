@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import Paper from '@material-ui/core/Paper'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeStyles } from '@material-ui/core'
 
 const AppRouter = lazy(()=>import('../router/app-router'))
@@ -8,7 +9,7 @@ export default function Layout() {
   const classes = useStyles()
   return (
     <Paper>
-      <Suspense fallback={<>Loading...</>}>
+      <Suspense fallback={<LinearProgress />}>
         <AppRouter classes={ classes }/>
       </Suspense>
     </Paper>
