@@ -13,22 +13,21 @@ export default class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url:'https://api.github.com/users?page=1&per_page=16',
+      url: 'https://api.github.com/users?page=1&per_page=16&since=0',
       isLoaded: false,
       error: null,
       users: [],
       pagination: null
     }
-    this.handleNext = this.handleNext.bind(this)
+    this.handlePaginationChange = this.handlePaginationChange.bind(this)
   }
 
   componentDidMount() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+    this.fetchData()
   }
 
   fetchData(){
+    window.scrollTo(0, 0)
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
@@ -39,8 +38,7 @@ export default class Users extends Component {
       result => {
         this.setState((state) => ({
           isLoaded: true,
-          users: result,
-          url: state.pagination.next.url
+          users: result
         }))
       },
       (error) => {
@@ -63,10 +61,11 @@ export default class Users extends Component {
     }
   }
 
-  handleNext() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+  handlePaginationChange(){
+    console.log(this.state.pagination)
+    this.setState((state, props) => ({
+      url: 'https://api.github.com/users?page=1&per_page=16&since=' + state.pagination.next.since
+    }), () => this.fetchData())
   }
 
   render() {
@@ -86,7 +85,7 @@ export default class Users extends Component {
           <UserList users={ users }/>
           <Grid container justify='flex-end'>
             <Box my={3} mr={10}>
-              <AppButton onClick={ this.handleNext }>next page</AppButton>
+              <AppButton onClick={ this.handlePaginationChange }>next page</AppButton>
             </Box>
           </Grid>
         </Box>

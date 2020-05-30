@@ -22,12 +22,11 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+    this.fetchData()
   }
 
   fetchData() {
+    window.scrollTo(0, 0)
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
@@ -64,10 +63,7 @@ export default class Repositories extends Component {
   handlePaginationChange(){
     this.setState((state, props) => ({
       url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
-    }),()=> this.fetchData(
-        window.scrollTo(0, 0)
-      )
-    )
+    }), () => this.fetchData())
   }
 
   render() {
