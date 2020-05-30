@@ -25,6 +25,17 @@ export default class Users extends Component {
   componentDidMount() {
     this.fetchData()
   }
+  
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.users !== this.state.users){
+      localStorage.setItem('users',JSON.stringify(this.state.users))
+    }else {
+      this.setState({
+        users: JSON.parse(localStorage.getItem('users')),
+        isLoaded: true
+      })
+    }
+  }
 
   fetchData(){
     window.scrollTo(0, 0)
@@ -48,17 +59,6 @@ export default class Users extends Component {
         })
       }
     )
-  }
-  
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.users !== this.state.users){
-      localStorage.setItem('users',JSON.stringify(this.state.users))
-    }else {
-      this.setState({
-        users: JSON.parse(localStorage.getItem('users')),
-        isLoaded: true
-      })
-    }
   }
 
   handlePaginationChange(){

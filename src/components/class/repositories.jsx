@@ -25,6 +25,17 @@ export default class Repositories extends Component {
     this.fetchData()
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.repositories !== this.state.repositories){
+      localStorage.setItem('repos',JSON.stringify(this.state.repositories))
+    } else {
+      this.setState({
+        repositories: JSON.parse(localStorage.getItem('repos')),
+        isLoaded: true
+      })
+    }
+  }
+
   fetchData() {
     window.scrollTo(0, 0)
     fetch(this.state.url,{mode: 'cors'}).then(
@@ -47,17 +58,6 @@ export default class Repositories extends Component {
         })
       }
     )
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.repositories !== this.state.repositories){
-      localStorage.setItem('repos',JSON.stringify(this.state.repositories))
-    } else {
-      this.setState({
-        repositories: JSON.parse(localStorage.getItem('repos')),
-        isLoaded: true
-      })
-    }
   }
 
   handlePaginationChange(){
