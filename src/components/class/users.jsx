@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import { Link } from 'react-router-dom'
 
 const UserList = lazy(()=>import('../function/user-list'))
 const AppButton = lazy(()=>import('../function/app-button'))
@@ -13,7 +14,7 @@ export default class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: 'https://api.github.com/users?page=1&per_page=16&since=0',
+      url: 'https://api.github.com/users?page=1&per_page=16&since=' + props.match.params.since,
       isLoaded: false,
       error: null,
       users: [],
@@ -62,14 +63,13 @@ export default class Users extends Component {
   }
 
   handlePaginationChange(){
-    console.log(this.state.pagination)
     this.setState((state, props) => ({
       url: 'https://api.github.com/users?page=1&per_page=16&since=' + state.pagination.next.since
     }), () => this.fetchData())
   }
 
   render() {
-    const { error, isLoaded, users } = this.state
+    const { error, isLoaded, users, pagination } = this.state
     if (error) {
       return <>Error: { error.message }</>
     } else if (!isLoaded){
@@ -85,7 +85,12 @@ export default class Users extends Component {
           <UserList users={ users }/>
           <Grid container justify='flex-end'>
             <Box my={3} mr={10}>
-              <AppButton onClick={ this.handlePaginationChange }>next page</AppButton>
+              <AppButton
+                component={Link}
+                to={`/users/since=${pagination.next.since}`}
+                onClick={ this.handlePaginationChange }>
+                next page
+              </AppButton>
             </Box>
           </Grid>
         </Box>

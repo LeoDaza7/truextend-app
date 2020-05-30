@@ -16,7 +16,7 @@ export default function AppRouter(props) {
       <Switch>
         <ErrorBoundary>
           <Route exact path='/' component={Home}/>
-          <Route exact path='/users' component={Users}/>
+          <Route exact path='/users/since=:since' component={Users}/>
           <Route exact path='/repos/user=:username/page=:page' component={Repositories}/>
         </ErrorBoundary>
       </Switch>
