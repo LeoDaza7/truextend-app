@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 export default function DrawerItems(props){
   const items = [
-    { component: 'Users', route: '/users/since=0', icon: <PeopleIcon /> }
+    { component: 'Users', route: '/users', icon: <PeopleIcon /> }
   ]
 
   const itemList = items.map((item) => (
