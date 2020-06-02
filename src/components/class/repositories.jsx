@@ -22,22 +22,24 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    this.fetchData()
+    const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('reposTime'))) / 1000
+    if(timeOut > 7200){
+      this.fetchData()
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('repos')))
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.repositories !== this.state.repositories){
-      localStorage.setItem('repos',JSON.stringify(this.state.repositories))
+    if(prevState !== this.state){
+      localStorage.setItem('repos',JSON.stringify(this.state))
+      localStorage.setItem('reposTime',new Date())
     } else {
-      this.setState({
-        repositories: JSON.parse(localStorage.getItem('repos')),
-        isLoaded: true
-      })
+      this.setState(JSON.parse(localStorage.getItem('repos')))
     }
   }
 
   fetchData() {
-    window.scrollTo(0, 0)
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
@@ -50,6 +52,7 @@ export default class Repositories extends Component {
           isLoaded: true,
           repositories: result
         })
+        window.scrollTo(0, 0)
       },
       (error) => {
         this.setState({

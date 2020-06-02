@@ -42,7 +42,6 @@ export default class Users extends Component {
   }
 
   fetchData(){
-    window.scrollTo(0, 0)
     fetch(this.state.url,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
@@ -51,10 +50,11 @@ export default class Users extends Component {
       )
     ).then(
       result => {
-        this.setState((state) => ({
+        this.setState({
           isLoaded: true,
           users: result
-        }))
+        })
+        window.scrollTo(0, 0)
       },
       (error) => {
         this.setState({
