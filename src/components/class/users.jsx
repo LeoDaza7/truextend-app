@@ -24,17 +24,20 @@ export default class Users extends Component {
   }
 
   componentDidMount() {
-    this.fetchData()
+    const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('usersTime'))) / 1000
+    if(timeOut > 7200){
+      this.fetchData()
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('users')))
+    }
   }
   
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.users !== this.state.users){
-      localStorage.setItem('users',JSON.stringify(this.state.users))
-    }else {
-      this.setState({
-        users: JSON.parse(localStorage.getItem('users')),
-        isLoaded: true
-      })
+    if(prevState !== this.state) {
+      localStorage.setItem('users',JSON.stringify(this.state))
+      localStorage.setItem('usersTime',new Date())
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('users')))
     }
   }
 
