@@ -22,12 +22,13 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('reposTime'))) / 1000
+    /*const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('reposTime'))) / 1000
     if(timeOut > 7200){
       this.fetchData()
     } else {
       this.setState(JSON.parse(localStorage.getItem('repos')))
-    }
+    }*/
+    this.fetchData()
   }
 
   componentDidUpdate(prevProps, prevState) {
