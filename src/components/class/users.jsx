@@ -13,19 +13,31 @@ export default class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url:'https://api.github.com/users?page=1&per_page=16',
+      url: 'https://api.github.com/users?page=1&per_page=16&since=0',
       isLoaded: false,
       error: null,
       users: [],
       pagination: null
     }
-    this.handleNext = this.handleNext.bind(this)
+    this.handlePaginationChange = this.handlePaginationChange.bind(this)
   }
 
   componentDidMount() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+    const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('usersTime'))) / 1000
+    if(timeOut > 7200){
+      this.fetchData()
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('users')))
+    }
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState !== this.state) {
+      localStorage.setItem('users',JSON.stringify(this.state))
+      localStorage.setItem('usersTime',new Date())
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('users')))
+    }
   }
 
   fetchData(){
@@ -37,11 +49,11 @@ export default class Users extends Component {
       )
     ).then(
       result => {
-        this.setState((state) => ({
+        this.setState({
           isLoaded: true,
-          users: result,
-          url: state.pagination.next.url
-        }))
+          users: result
+        })
+        window.scrollTo(0, 0)
       },
       (error) => {
         this.setState({
@@ -51,22 +63,11 @@ export default class Users extends Component {
       }
     )
   }
-  
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.users !== this.state.users){
-      localStorage.setItem('users',JSON.stringify(this.state.users))
-    }else {
-      this.setState({
-        users: JSON.parse(localStorage.getItem('users')),
-        isLoaded: true
-      })
-    }
-  }
 
-  handleNext() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+  handlePaginationChange(){
+    this.setState((state, props) => ({
+      url: 'https://api.github.com/users?page=1&per_page=16&since=' + state.pagination.next.since
+    }), () => this.fetchData())
   }
 
   render() {
@@ -86,7 +87,10 @@ export default class Users extends Component {
           <UserList users={ users }/>
           <Grid container justify='flex-end'>
             <Box my={3} mr={10}>
-              <AppButton onClick={ this.handleNext }>next page</AppButton>
+              <AppButton
+                onClick={ this.handlePaginationChange }>
+                next page
+              </AppButton>
             </Box>
           </Grid>
         </Box>

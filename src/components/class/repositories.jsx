@@ -22,9 +22,22 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    this.fetchData(
-      window.scrollTo(0, 0)
-    )
+    /*const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('reposTime'))) / 1000
+    if(timeOut > 7200){
+      this.fetchData()
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('repos')))
+    }*/
+    this.fetchData()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState !== this.state){
+      localStorage.setItem('repos',JSON.stringify(this.state))
+      localStorage.setItem('reposTime',new Date())
+    } else {
+      this.setState(JSON.parse(localStorage.getItem('repos')))
+    }
   }
 
   fetchData() {
@@ -40,6 +53,7 @@ export default class Repositories extends Component {
           isLoaded: true,
           repositories: result
         })
+        window.scrollTo(0, 0)
       },
       (error) => {
         this.setState({
@@ -50,24 +64,10 @@ export default class Repositories extends Component {
     )
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.repositories !== this.state.repositories){
-      localStorage.setItem('repos',JSON.stringify(this.state.repositories))
-    } else {
-      this.setState({
-        repositories: JSON.parse(localStorage.getItem('repos')),
-        isLoaded: true
-      })
-    }
-  }
-
   handlePaginationChange(){
     this.setState((state, props) => ({
       url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
-    }),()=> this.fetchData(
-        window.scrollTo(0, 0)
-      )
-    )
+    }), () => this.fetchData())
   }
 
   render() {
