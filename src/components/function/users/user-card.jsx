@@ -10,8 +10,8 @@ import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 
-const AppIconButton = lazy(()=>import('./app-icon-button'))
-const AppButton = lazy(()=>import('./app-button'))
+const AppIconButton = lazy(()=>import('../app-icon-button'))
+const AppButton = lazy(()=>import('../app-button'))
 
 export default function UserCard(props) {
   const classes = useStyles()
