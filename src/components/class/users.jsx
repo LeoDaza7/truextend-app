@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
-const UserList = lazy(()=>import('../function/user-list'))
+const UserList = lazy(()=>import('../function/users/user-list'))
 const AppButton = lazy(()=>import('../function/app-button'))
 const parseLinkHeader = require('parse-link-header')
 
@@ -13,7 +13,7 @@ export default class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: 'https://api.github.com/users?page=1&per_page=16&since=0',
+      githubApiUsersUrl: 'https://api.github.com/users?page=1&per_page=16&since=0',
       isLoaded: false,
       error: null,
       users: [],
@@ -23,11 +23,10 @@ export default class Users extends Component {
   }
 
   componentDidMount() {
-    const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('usersTime'))) / 1000
-    if(timeOut > 7200){
-      this.fetchData()
-    } else {
+    if(this.isLocalStorageIsValid()){
       this.setState(JSON.parse(localStorage.getItem('users')))
+    } else {
+      this.fetchData()
     }
   }
   
@@ -41,7 +40,7 @@ export default class Users extends Component {
   }
 
   fetchData(){
-    fetch(this.state.url,{mode: 'cors'}).then(
+    fetch(this.state.githubApiUsersUrl,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
           pagination: parseLinkHeader(response.headers.get('link'))
@@ -64,9 +63,21 @@ export default class Users extends Component {
     )
   }
 
+  isLocalStorageIsValid () {
+    const localStorageTimeOutInHours = Math.abs(
+      new Date() - new Date(localStorage.getItem('usersTime'))
+    ) / (1000 * 60 * 60)
+    if(localStorageTimeOutInHours < 2){
+      return true
+    } else {
+      return false
+    }
+  }
+
   handlePaginationChange(){
     this.setState((state, props) => ({
-      url: 'https://api.github.com/users?page=1&per_page=16&since=' + state.pagination.next.since
+      githubApiUsersUrl: 'https://api.github.com/users?page=1&per_page=16&since=' 
+        + state.pagination.next.since
     }), () => this.fetchData())
   }
 
