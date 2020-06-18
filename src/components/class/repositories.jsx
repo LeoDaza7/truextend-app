@@ -12,7 +12,8 @@ export default class Repositories extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16',
+      githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username 
+        + '/repos?page=' + props.match.params.page +'&per_page=16',
       repositories: [],
       isLoaded: false,
       error: null,
@@ -41,7 +42,7 @@ export default class Repositories extends Component {
   }
 
   fetchData() {
-    fetch(this.state.url,{mode: 'cors'}).then(
+    fetch(this.state.githubApiRepositoriesUrl,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
           pagination: parseLinkHeader(response.headers.get('link'))
@@ -66,7 +67,7 @@ export default class Repositories extends Component {
 
   handlePaginationChange(){
     this.setState((state, props) => ({
-      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
+      githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
     }), () => this.fetchData())
   }
 
