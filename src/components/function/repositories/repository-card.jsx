@@ -8,7 +8,7 @@ import CardActions from '@material-ui/core/CardActions'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 
-const AppIconButton = lazy(()=>import('./app-icon-button'))
+const AppIconButton = lazy(()=>import('../app-icon-button'))
 
 export default function UserCard(props) {
   const classes = useStyles()
