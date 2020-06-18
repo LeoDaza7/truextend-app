@@ -23,13 +23,11 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    /*const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('reposTime'))) / 1000
-    if(timeOut > 7200){
-      this.fetchData()
-    } else {
+    if(this.isLocalStorageIsValid()){
       this.setState(JSON.parse(localStorage.getItem('repos')))
-    }*/
-    this.fetchData()
+    } else {
+      this.fetchData()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -63,6 +61,17 @@ export default class Repositories extends Component {
         })
       }
     )
+  }
+
+  isLocalStorageIsValid () {
+    const localStorageTimeOutInHours = Math.abs(
+      new Date() - new Date(localStorage.getItem('reposTime'))
+    ) / (1000 * 60 * 60)
+    if(localStorageTimeOutInHours < 2){
+      return false
+    } else {
+      return true
+    }
   }
 
   handlePaginationChange(){
