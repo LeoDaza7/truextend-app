@@ -24,22 +24,21 @@ export default class Users extends Component {
 
   componentDidMount() {
     if(this.isLocalStorageIsValid()){
-      this.setState(JSON.parse(localStorage.getItem('users')))
+      this.loadDatafromLocalStorage()
     } else {
-      this.fetchData()
+      this.fetchDataFromApi()
     }
   }
   
   componentDidUpdate(prevProps, prevState) {
     if(prevState !== this.state) {
-      localStorage.setItem('users',JSON.stringify(this.state))
-      localStorage.setItem('usersTime',new Date())
+      this.saveDataToLocalStorage()
     } else {
-      this.setState(JSON.parse(localStorage.getItem('users')))
+      this.loadDatafromLocalStorage()
     }
   }
 
-  fetchData(){
+  fetchDataFromApi(){
     fetch(this.state.githubApiUsersUrl,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
@@ -63,6 +62,15 @@ export default class Users extends Component {
     )
   }
 
+  saveDataToLocalStorage() {
+    localStorage.setItem('users',JSON.stringify(this.state))
+    localStorage.setItem('usersTime',new Date())
+  }
+
+  loadDatafromLocalStorage() {
+    this.setState(JSON.parse(localStorage.getItem('users')))
+  }
+
   isLocalStorageIsValid () {
     const localStorageTimeOutInHours = Math.abs(
       new Date() - new Date(localStorage.getItem('usersTime'))
@@ -78,7 +86,7 @@ export default class Users extends Component {
     this.setState((state, props) => ({
       githubApiUsersUrl: 'https://api.github.com/users?page=1&per_page=16&since=' 
         + state.pagination.next.since
-    }), () => this.fetchData())
+    }), () => this.fetchDataFromApi())
   }
 
   render() {
