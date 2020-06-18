@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
-const RepositoryList = lazy(()=>import('../function/repository-list'))
+const RepositoryList = lazy(()=>import('../function/repositories/repository-list'))
 const AppPagination = lazy(()=>import('../function/app-pagination'))
 const parseLinkHeader = require('parse-link-header')
 
@@ -67,7 +67,8 @@ export default class Repositories extends Component {
 
   handlePaginationChange(){
     this.setState((state, props) => ({
-      githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
+      githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username 
+        + '/repos?page=' + props.match.params.page + '&per_page=16'
     }), () => this.fetchData())
   }
 
