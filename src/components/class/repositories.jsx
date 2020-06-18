@@ -24,22 +24,21 @@ export default class Repositories extends Component {
 
   componentDidMount() {
     if(this.isLocalStorageIsValid()){
-      this.setState(JSON.parse(localStorage.getItem('repos')))
+      this.loadDatafromLocalStorage()
     } else {
-      this.fetchData()
+      this.fetchDataFromApi()
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState !== this.state){
-      localStorage.setItem('repos',JSON.stringify(this.state))
-      localStorage.setItem('reposTime',new Date())
+      this.saveDataToLocalStorage()
     } else {
-      this.setState(JSON.parse(localStorage.getItem('repos')))
+      this.loadDatafromLocalStorage()
     }
   }
 
-  fetchData() {
+  fetchDataFromApi() {
     fetch(this.state.githubApiRepositoriesUrl,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
@@ -63,6 +62,15 @@ export default class Repositories extends Component {
     )
   }
 
+  saveDataToLocalStorage() {
+    localStorage.setItem('repos',JSON.stringify(this.state))
+    localStorage.setItem('reposTime',new Date())
+  }
+
+  loadDatafromLocalStorage() {
+    this.setState(JSON.parse(localStorage.getItem('repos')))
+  }
+
   isLocalStorageIsValid () {
     const localStorageTimeOutInHours = Math.abs(
       new Date() - new Date(localStorage.getItem('reposTime'))
@@ -78,7 +86,7 @@ export default class Repositories extends Component {
     this.setState((state, props) => ({
       githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username 
         + '/repos?page=' + props.match.params.page + '&per_page=16'
-    }), () => this.fetchData())
+    }), () => this.fetchDataFromApi())
   }
 
   render() {
