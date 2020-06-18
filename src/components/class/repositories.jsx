@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
-const RepositoryList = lazy(()=>import('../function/repository-list'))
+const RepositoryList = lazy(()=>import('../function/repositories/repository-list'))
 const AppPagination = lazy(()=>import('../function/app-pagination'))
 const parseLinkHeader = require('parse-link-header')
 
@@ -12,7 +12,8 @@ export default class Repositories extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16',
+      githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username 
+        + '/repos?page=' + props.match.params.page +'&per_page=16',
       repositories: [],
       isLoaded: false,
       error: null,
@@ -22,26 +23,23 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    /*const timeOut = Math.abs(new Date() - new Date(localStorage.getItem('reposTime'))) / 1000
-    if(timeOut > 7200){
-      this.fetchData()
+    if(this.isLocalStorageIsValid()){
+      this.loadDatafromLocalStorage()
     } else {
-      this.setState(JSON.parse(localStorage.getItem('repos')))
-    }*/
-    this.fetchData()
+      this.fetchDataFromApi()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevState !== this.state){
-      localStorage.setItem('repos',JSON.stringify(this.state))
-      localStorage.setItem('reposTime',new Date())
+      this.saveDataToLocalStorage()
     } else {
-      this.setState(JSON.parse(localStorage.getItem('repos')))
+      this.loadDatafromLocalStorage()
     }
   }
 
-  fetchData() {
-    fetch(this.state.url,{mode: 'cors'}).then(
+  fetchDataFromApi() {
+    fetch(this.state.githubApiRepositoriesUrl,{mode: 'cors'}).then(
       response => response.json(
         this.setState({
           pagination: parseLinkHeader(response.headers.get('link'))
@@ -64,10 +62,31 @@ export default class Repositories extends Component {
     )
   }
 
+  saveDataToLocalStorage() {
+    localStorage.setItem('repos',JSON.stringify(this.state))
+    localStorage.setItem('reposTime',new Date())
+  }
+
+  loadDatafromLocalStorage() {
+    this.setState(JSON.parse(localStorage.getItem('repos')))
+  }
+
+  isLocalStorageIsValid () {
+    const localStorageTimeOutInHours = Math.abs(
+      new Date() - new Date(localStorage.getItem('reposTime'))
+    ) / (1000 * 60 * 60)
+    if(localStorageTimeOutInHours < 2){
+      return false
+    } else {
+      return true
+    }
+  }
+
   handlePaginationChange(){
     this.setState((state, props) => ({
-      url: 'https://api.github.com/users/' + props.match.params.username +'/repos?page='+ props.match.params.page +'&per_page=16'
-    }), () => this.fetchData())
+      githubApiRepositoriesUrl: 'https://api.github.com/users/' + props.match.params.username 
+        + '/repos?page=' + props.match.params.page + '&per_page=16'
+    }), () => this.fetchDataFromApi())
   }
 
   render() {
