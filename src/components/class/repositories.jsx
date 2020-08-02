@@ -23,7 +23,7 @@ export default class Repositories extends Component {
   }
 
   componentDidMount() {
-    if(this.isLocalStorageIsValid()){
+    if(this.isLocalStorageValid()){
       this.fetchDataFromApi()
     } else {
       this.fetchDataFromApi()
@@ -34,7 +34,7 @@ export default class Repositories extends Component {
     if(prevState !== this.state){
       this.saveDataToLocalStorage()
     } else {
-      this.loadDatafromLocalStorage()
+      this.loadDataFromLocalStorage()
     }
   }
 
@@ -67,11 +67,11 @@ export default class Repositories extends Component {
     localStorage.setItem('reposTime',new Date())
   }
 
-  loadDatafromLocalStorage() {
+  loadDataFromLocalStorage() {
     this.setState(JSON.parse(localStorage.getItem('repos')))
   }
 
-  isLocalStorageIsValid () {
+  isLocalStorageValid () {
     const localStorageTimeOutInHours = Math.abs(
       new Date() - new Date(localStorage.getItem('reposTime'))
     ) / (1000 * 60 * 60)
