@@ -24,7 +24,7 @@ export default class Repositories extends Component {
 
   componentDidMount() {
     if(this.isLocalStorageIsValid()){
-      this.loadDatafromLocalStorage()
+      this.fetchDataFromApi()
     } else {
       this.fetchDataFromApi()
     }
@@ -75,11 +75,7 @@ export default class Repositories extends Component {
     const localStorageTimeOutInHours = Math.abs(
       new Date() - new Date(localStorage.getItem('reposTime'))
     ) / (1000 * 60 * 60)
-    if(localStorageTimeOutInHours < 2){
-      return false
-    } else {
-      return true
-    }
+    return localStorageTimeOutInHours < 2
   }
 
   handlePaginationChange(){

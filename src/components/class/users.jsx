@@ -23,8 +23,8 @@ export default class Users extends Component {
   }
 
   componentDidMount() {
-    if(this.isLocalStorageIsValid()){
-      this.loadDatafromLocalStorage()
+    if(this.isLocalStorageValid()){
+      this.loadDataFromLocalStorage()
     } else {
       this.fetchDataFromApi()
     }
@@ -34,7 +34,7 @@ export default class Users extends Component {
     if(prevState !== this.state) {
       this.saveDataToLocalStorage()
     } else {
-      this.loadDatafromLocalStorage()
+      this.loadDataFromLocalStorage()
     }
   }
 
@@ -67,19 +67,15 @@ export default class Users extends Component {
     localStorage.setItem('usersTime',new Date())
   }
 
-  loadDatafromLocalStorage() {
+  loadDataFromLocalStorage() {
     this.setState(JSON.parse(localStorage.getItem('users')))
   }
 
-  isLocalStorageIsValid () {
+  isLocalStorageValid () {
     const localStorageTimeOutInHours = Math.abs(
       new Date() - new Date(localStorage.getItem('usersTime'))
     ) / (1000 * 60 * 60)
-    if(localStorageTimeOutInHours < 2){
-      return true
-    } else {
-      return false
-    }
+    return localStorageTimeOutInHours < 2
   }
 
   handlePaginationChange(){
@@ -108,7 +104,7 @@ export default class Users extends Component {
             <Box my={3} mr={10}>
               <AppButton
                 onClick={ this.handlePaginationChange }>
-                next page
+                Next page
               </AppButton>
             </Box>
           </Grid>
